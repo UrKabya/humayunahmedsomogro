@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Simple styles just for home page */
+        /* Home page specific styles */
         .container {
             padding: 100px 20px 20px;
             max-width: 1200px;
@@ -33,65 +33,122 @@
             margin-bottom: 30px;
         }
         
-        .books-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-        }
-        
-        .book-card {
-            background: var(--card-bg);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease;
-            border: 1px solid var(--border-color);
-        }
-        
-        .book-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .book-cover {
+        /* Book Carousel */
+        .carousel-container {
             width: 100%;
-            height: 180px;
+            margin: 40px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+        
+        .book-slide {
+            min-width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .book-cover-large {
+            width: 180px;
+            height: 260px;
             object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 10px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+            border: 3px solid var(--primary-color);
         }
         
-        .book-title {
-            font-size: 0.9rem;
-            font-weight: 600;
+        .book-title-large {
+            font-size: 1.3rem;
+            font-weight: 700;
             color: var(--text-primary);
-            margin: 5px 0;
-        }
-        
-        .book-pages {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
             margin-bottom: 10px;
+            text-align: center;
         }
         
-        .read-btn {
+        .book-pages-large {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .read-btn-large {
             display: inline-block;
-            padding: 8px 15px;
+            padding: 10px 25px;
             background: var(--primary-color);
             color: white;
             text-decoration: none;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            border-radius: 25px;
+            font-size: 1rem;
             font-weight: 600;
             transition: all 0.3s ease;
         }
         
-        .read-btn:hover {
+        .read-btn-large:hover {
             background: var(--secondary-color);
             transform: scale(1.05);
         }
         
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+        
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-dot.active {
+            background: var(--primary-color);
+            transform: scale(1.2);
+        }
+        
+        .carousel-arrows {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            transform: translateY(-50%);
+            padding: 0 20px;
+        }
+        
+        .carousel-arrow {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .carousel-arrow:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        /* Search Box */
         .search-box {
             max-width: 600px;
             margin: 30px auto;
@@ -118,6 +175,39 @@
             border-color: var(--primary-color);
         }
         
+        .search-results {
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        
+        .search-result-item {
+            display: block;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .search-result-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-left: 3px solid var(--primary-color);
+            transform: translateX(5px);
+        }
+        
+        .no-results {
+            text-align: center;
+            color: var(--text-secondary);
+            padding: 20px;
+            font-style: italic;
+        }
+        
         @media (max-width: 768px) {
             .container {
                 padding: 80px 15px 15px;
@@ -127,8 +217,13 @@
                 font-size: 1.8rem;
             }
             
-            .books-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .book-cover-large {
+                width: 150px;
+                height: 220px;
+            }
+            
+            .carousel-arrows {
+                display: none;
             }
         }
     </style>
@@ -162,15 +257,26 @@
             <p class="welcome-subtitle">বাংলা সাহিত্যের কিংবদন্তি লেখকের বই সংগ্রহ</p>
         </div>
         
+        <!-- Book Carousel -->
+        <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Slides will be loaded by JavaScript -->
+            </div>
+            
+            <div class="carousel-arrows">
+                <button class="carousel-arrow prev-arrow"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-arrow next-arrow"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="carousel-nav" id="carouselNav">
+                <!-- Dots will be loaded by JavaScript -->
+            </div>
+        </div>
+        
         <!-- Search Box -->
         <div class="search-box">
             <input type="text" id="searchInput" placeholder="বইয়ের নাম লিখুন...">
-            <div id="searchResults" style="margin-top: 15px;"></div>
-        </div>
-        
-        <!-- Books Grid -->
-        <div class="books-grid" id="booksGrid">
-            <!-- Books will be loaded by JavaScript -->
+            <div class="search-results" id="searchResults"></div>
         </div>
     </div>
 
@@ -210,82 +316,7 @@
     </footer>
 
     <script>
-        // SIMPLE JavaScript for home page - NO COMPLEX ANIMATIONS
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Home page loaded successfully!');
-            
-            // Theme Toggle
-            const themeToggle = document.getElementById('themeToggle');
-            const body = document.body;
-            
-            if (themeToggle) {
-                themeToggle.addEventListener('click', () => {
-                    body.classList.toggle('dark-mode');
-                    body.classList.toggle('light-mode');
-                    
-                    const icon = themeToggle.querySelector('i');
-                    if (body.classList.contains('light-mode')) {
-                        icon.className = 'fas fa-sun';
-                    } else {
-                        icon.className = 'fas fa-moon';
-                    }
-                    
-                    localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
-                });
-                
-                // Load saved theme
-                const savedTheme = localStorage.getItem('theme') || 'dark';
-                if (savedTheme === 'light') {
-                    body.classList.remove('dark-mode');
-                    body.classList.add('light-mode');
-                    themeToggle.querySelector('i').className = 'fas fa-sun';
-                }
-            }
-            
-            // Mobile Menu Toggle
-            const menuToggle = document.getElementById('menuToggle');
-            const navLinks = document.querySelector('.nav-links');
-            
-            if (menuToggle) {
-                menuToggle.addEventListener('click', () => {
-                    navLinks.classList.toggle('active');
-                });
-                
-                document.addEventListener('click', (e) => {
-                    if (!e.target.closest('.nav-container')) {
-                        navLinks.classList.remove('active');
-                    }
-                });
-            }
-            
-            // Footer info cards
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const card = this.querySelector('.info-card');
-                    
-                    document.querySelectorAll('.info-card').forEach(c => {
-                        if (c !== card) c.classList.remove('show');
-                    });
-                    
-                    card.classList.toggle('show');
-                });
-            });
-            
-            document.addEventListener('click', () => {
-                document.querySelectorAll('.info-card').forEach(card => {
-                    card.classList.remove('show');
-                });
-            });
-            
-            // Load books
-            loadBooks();
-            
-            // Initialize search
-            initializeSearch();
-        });
-        
-        // Simple book data
+        // Book data with all 12 books
         const booksData = [
             {
                 id: 1,
@@ -328,37 +359,246 @@
                 cover: "https://i.ibb.co/1GyyFyfg/upscalemedia-transformed-4-modified.png",
                 pages: "96 pages",
                 pdf: "https://heyzine.com/flip-book/ebd245c88d.html"
+            },
+            {
+                id: 7,
+                title: "দ্বিতীয় মানব",
+                cover: "https://i.ibb.co/5wZ0Ty4/upscalemedia-transformed-3-modified.png",
+                pages: "53 pages",
+                pdf: "https://heyzine.com/flip-book/01867b93a0.html"
+            },
+            {
+                id: 8,
+                title: "মেঘ বলেছে যাব যাব",
+                cover: "https://i.ibb.co/4nfWJdLk/upscalemedia-transformed-2-modified.png",
+                pages: "248 pages",
+                pdf: "https://heyzine.com/flip-book/3804efc7e4.html"
+            },
+            {
+                id: 9,
+                title: "মিসির আলি সমগ্র - ২",
+                cover: "https://i.ibb.co/S7MxWjzR/Misir-Ali-Samagra-2-Book-Cover-2-modified.png",
+                pages: "324 pages",
+                pdf: "https://heyzine.com/flip-book/36500c0f66.html"
+            },
+            {
+                id: 10,
+                title: "ওমেগা পয়েন্ট",
+                cover: "https://i.ibb.co/vCSm3xqt/1800897-modified.png",
+                pages: "106 pages",
+                pdf: "https://heyzine.com/flip-book/8debbab869.html"
+            },
+            {
+                id: 11,
+                title: "মিসির আলি!",
+                cover: "https://i.ibb.co/mrywkVss/upscalemedia-transformed-3-modified.png",
+                pages: "94 pages",
+                pdf: "https://heyzine.com/flip-book/5620253d1a.html"
+            },
+            {
+                id: 12,
+                title: "মিসির আলি ! আপনি কোথায়?",
+                cover: "https://placehold.co/180x260/cccccc/333333?text=Book+12",
+                pages: "120 pages",
+                pdf: "https://heyzine.com/flip-book/197fe6e70b.html"
             }
         ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Home page loaded successfully!');
+            
+            // Initialize theme toggle
+            initThemeToggle();
+            
+            // Initialize mobile menu
+            initMobileMenu();
+            
+            // Initialize footer info cards
+            initFooterCards();
+            
+            // Load carousel
+            initCarousel();
+            
+            // Initialize search
+            initSearch();
+        });
         
-        // Load books into grid
-        function loadBooks() {
-            const booksGrid = document.getElementById('booksGrid');
+        function initThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
             
-            if (!booksGrid) {
-                console.error('Books grid not found');
-                return;
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    body.classList.toggle('dark-mode');
+                    body.classList.toggle('light-mode');
+                    
+                    const icon = themeToggle.querySelector('i');
+                    if (body.classList.contains('light-mode')) {
+                        icon.className = 'fas fa-sun';
+                    } else {
+                        icon.className = 'fas fa-moon';
+                    }
+                    
+                    localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+                });
+                
+                // Load saved theme
+                const savedTheme = localStorage.getItem('theme') || 'dark';
+                if (savedTheme === 'light') {
+                    body.classList.remove('dark-mode');
+                    body.classList.add('light-mode');
+                    themeToggle.querySelector('i').className = 'fas fa-sun';
+                }
             }
-            
-            booksData.forEach(book => {
-                const bookCard = document.createElement('div');
-                bookCard.className = 'book-card';
-                
-                bookCard.innerHTML = `
-                    <img src="${book.cover}" alt="${book.title}" class="book-cover" onerror="this.src='https://placehold.co/150x180/cccccc/333333?text=Book+Cover'">
-                    <h3 class="book-title">${book.title}</h3>
-                    <p class="book-pages">${book.pages}</p>
-                    <a href="${book.pdf}" target="_blank" class="read-btn">পড়ুন</a>
-                `;
-                
-                booksGrid.appendChild(bookCard);
-            });
-            
-            console.log('Books loaded successfully!');
         }
         
-        // Simple search functionality
-        function initializeSearch() {
+        function initMobileMenu() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.nav-container')) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+                
+                // Close menu when clicking a link
+                navLinks.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        navLinks.classList.remove('active');
+                    });
+                });
+            }
+        }
+        
+        function initFooterCards() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const card = this.querySelector('.info-card');
+                    
+                    document.querySelectorAll('.info-card').forEach(c => {
+                        if (c !== card) c.classList.remove('show');
+                    });
+                    
+                    card.classList.toggle('show');
+                });
+            });
+            
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.info-card').forEach(card => {
+                    card.classList.remove('show');
+                });
+            });
+        }
+        
+        function initCarousel() {
+            const track = document.getElementById('carouselTrack');
+            const nav = document.getElementById('carouselNav');
+            const prevBtn = document.querySelector('.prev-arrow');
+            const nextBtn = document.querySelector('.next-arrow');
+            
+            if (!track || !nav) return;
+            
+            let currentSlide = 0;
+            
+            // Create slides
+            booksData.forEach((book, index) => {
+                // Create slide
+                const slide = document.createElement('div');
+                slide.className = 'book-slide';
+                slide.innerHTML = `
+                    <img src="${book.cover}" alt="${book.title}" class="book-cover-large" onerror="this.src='https://placehold.co/180x260/cccccc/333333?text=${book.title}'">
+                    <h3 class="book-title-large">${book.title}</h3>
+                    <p class="book-pages-large">${book.pages}</p>
+                    <a href="${book.pdf}" target="_blank" class="read-btn-large">পড়ুন</a>
+                `;
+                track.appendChild(slide);
+                
+                // Create dot
+                const dot = document.createElement('div');
+                dot.className = 'carousel-dot';
+                dot.dataset.index = index;
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                });
+                nav.appendChild(dot);
+            });
+            
+            // Set first slide as active
+            updateCarousel();
+            
+            // Previous button
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    currentSlide = (currentSlide - 1 + booksData.length) % booksData.length;
+                    updateCarousel();
+                });
+            }
+            
+            // Next button
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    currentSlide = (currentSlide + 1) % booksData.length;
+                    updateCarousel();
+                });
+            }
+            
+            // Auto slide every 5 seconds
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % booksData.length;
+                updateCarousel();
+            }, 5000);
+            
+            // Touch swipe support
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            track.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, {passive: true});
+            
+            track.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, {passive: true});
+            
+            function handleSwipe() {
+                const threshold = 50;
+                
+                if (touchEndX < touchStartX - threshold) {
+                    // Swipe left - next
+                    currentSlide = (currentSlide + 1) % booksData.length;
+                } else if (touchEndX > touchStartX + threshold) {
+                    // Swipe right - previous
+                    currentSlide = (currentSlide - 1 + booksData.length) % booksData.length;
+                }
+                updateCarousel();
+            }
+            
+            function updateCarousel() {
+                // Move track
+                track.style.transform = `translateX(-${currentSlide * 100}%)`;
+                
+                // Update dots
+                document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentSlide);
+                });
+            }
+            
+            function goToSlide(index) {
+                currentSlide = index;
+                updateCarousel();
+            }
+        }
+        
+        function initSearch() {
             const searchInput = document.getElementById('searchInput');
             const searchResults = document.getElementById('searchResults');
             
@@ -370,23 +610,33 @@
                 
                 if (query === '') return;
                 
+                // Find matching books
                 const foundBooks = booksData.filter(book => 
                     book.title.toLowerCase().includes(query)
                 );
                 
                 if (foundBooks.length > 0) {
-                    foundBooks.forEach(book => {
-                        const resultItem = document.createElement('div');
-                        resultItem.className = 'search-result';
-                        resultItem.innerHTML = `
-                            <a href="${book.pdf}" target="_blank" style="display: block; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; margin: 5px 0; color: var(--text-primary); text-decoration: none;">
-                                ${book.title} - ${book.pages}
-                            </a>
-                        `;
-                        searchResults.appendChild(resultItem);
-                    });
+                    // Show only ONE book at a time (the first match)
+                    const book = foundBooks[0];
+                    const resultItem = document.createElement('a');
+                    resultItem.href = book.pdf;
+                    resultItem.target = '_blank';
+                    resultItem.className = 'search-result-item';
+                    resultItem.textContent = `${book.title} - ${book.pages}`;
+                    searchResults.appendChild(resultItem);
                 } else {
-                    searchResults.innerHTML = '<p style="color: var(--text-secondary); text-align: center;">কোনো বই পাওয়া যায়নি</p>';
+                    const noResult = document.createElement('p');
+                    noResult.className = 'no-results';
+                    noResult.textContent = 'কোনো বই পাওয়া যায়নি !';
+                    searchResults.appendChild(noResult);
+                }
+            });
+            
+            // Clear results when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-box')) {
+                    searchResults.innerHTML = '';
+                    searchInput.value = '';
                 }
             });
         }
