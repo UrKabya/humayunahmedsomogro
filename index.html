@@ -2,16 +2,134 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>হুমায়ূন আহমেদ সমগ্র - Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Add this to ensure main content is visible when intro is skipped */
-        #mainContainer.visible {
-            opacity: 1 !important;
-            display: flex !important;
+        /* Simple styles just for home page */
+        .container {
+            padding: 100px 20px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: calc(100vh - 120px);
+        }
+        
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .welcome-title {
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+        
+        .welcome-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+        
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .book-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+        
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .book-cover {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .book-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 5px 0;
+        }
+        
+        .book-pages {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .read-btn {
+            display: inline-block;
+            padding: 8px 15px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .read-btn:hover {
+            background: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        
+        .search-box {
+            max-width: 600px;
+            margin: 30px auto;
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-primary);
+            font-family: 'Baloo Da 2', cursive;
+            font-size: 1rem;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 15px 15px;
+            }
+            
+            .welcome-title {
+                font-size: 1.8rem;
+            }
+            
+            .books-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
@@ -37,32 +155,22 @@
         </div>
     </nav>
 
-    <!-- Intro Overlay -->
-    <div class="intro-overlay" id="introOverlay">
-        <div class="particles" id="particles"></div>
-        <div class="intro-books-container" id="introBooksContainer">
-            <h1 class="intro-title">হুমায়ূন আহমেদ সমগ্র</h1>
-            <button class="enter-btn" id="enterBtn">প্রবেশ করুন</button>
-        </div>
-    </div>
-
     <!-- Main Content -->
-    <div class="container" id="mainContainer">
-        <!-- Search Interface -->
-        <div class="search-container" id="searchContainer">
-            <div class="header">
-                <h1>হুমায়ূন আহমেদ সমগ্র</h1>
-            </div>
-            
-            <input type="text" id="searchInput" placeholder="বইয়ের নাম লিখুন...">
-            
-            <div id="searchResults"></div>
+    <div class="container">
+        <div class="welcome-section">
+            <h1 class="welcome-title">হুমায়ূন আহমেদ সমগ্র</h1>
+            <p class="welcome-subtitle">বাংলা সাহিত্যের কিংবদন্তি লেখকের বই সংগ্রহ</p>
         </div>
-
-        <!-- Book Gallery -->
-        <div class="gallery-container" id="galleryContainer">
-            <div class="book-gallery" id="bookGallery"></div>
-            <div class="nav-dots" id="navDots"></div>
+        
+        <!-- Search Box -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="বইয়ের নাম লিখুন...">
+            <div id="searchResults" style="margin-top: 15px;"></div>
+        </div>
+        
+        <!-- Books Grid -->
+        <div class="books-grid" id="booksGrid">
+            <!-- Books will be loaded by JavaScript -->
         </div>
     </div>
 
@@ -78,7 +186,7 @@
                 <div class="nav-item" id="privacyBtn">
                     Privacy Policy
                     <div class="info-card" id="privacyCard">
-                        We respect your privacy. Your personal data is collected only with your consent, used solely for the intended purpose, and protected with appropriate security measures.
+                        We respect your privacy. Your personal data is collected only with your consent.
                     </div>
                 </div>
 
@@ -101,8 +209,187 @@
         </div>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="script.js"></script>
+    <script>
+        // SIMPLE JavaScript for home page - NO COMPLEX ANIMATIONS
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Home page loaded successfully!');
+            
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    body.classList.toggle('dark-mode');
+                    body.classList.toggle('light-mode');
+                    
+                    const icon = themeToggle.querySelector('i');
+                    if (body.classList.contains('light-mode')) {
+                        icon.className = 'fas fa-sun';
+                    } else {
+                        icon.className = 'fas fa-moon';
+                    }
+                    
+                    localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+                });
+                
+                // Load saved theme
+                const savedTheme = localStorage.getItem('theme') || 'dark';
+                if (savedTheme === 'light') {
+                    body.classList.remove('dark-mode');
+                    body.classList.add('light-mode');
+                    themeToggle.querySelector('i').className = 'fas fa-sun';
+                }
+            }
+            
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (menuToggle) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                });
+                
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.nav-container')) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Footer info cards
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const card = this.querySelector('.info-card');
+                    
+                    document.querySelectorAll('.info-card').forEach(c => {
+                        if (c !== card) c.classList.remove('show');
+                    });
+                    
+                    card.classList.toggle('show');
+                });
+            });
+            
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.info-card').forEach(card => {
+                    card.classList.remove('show');
+                });
+            });
+            
+            // Load books
+            loadBooks();
+            
+            // Initialize search
+            initializeSearch();
+        });
+        
+        // Simple book data
+        const booksData = [
+            {
+                id: 1,
+                title: "অপেক্ষা",
+                cover: "https://i.ibb.co/jvLJHYKy/2384227-IMG-modified.png",
+                pages: "148 pages",
+                pdf: "https://heyzine.com/flip-book/197fe6e70b.html"
+            },
+            {
+                id: 2,
+                title: "বৃষ্টি বিলাস",
+                cover: "https://i.ibb.co/VY8zsM28/upscalemedia-transformed-2-modified.png",
+                pages: "97 pages",
+                pdf: "https://heyzine.com/flip-book/1a2e8c1868.html"
+            },
+            {
+                id: 3,
+                title: "নন্দিত নরকে",
+                cover: "https://i.ibb.co/d014JgHs/upscalemedia-transformed-1-modified-1.png",
+                pages: "78 pages",
+                pdf: "https://heyzine.com/flip-book/b4a3d63030.html"
+            },
+            {
+                id: 4,
+                title: "শঙ্খনীল কারাগার",
+                cover: "https://i.ibb.co/GfH9xgQR/reprint-2023cover-Humayun-Shankhanil-Karagar-modified.png",
+                pages: "67 pages",
+                pdf: "https://heyzine.com/flip-book/6c60034146.html"
+            },
+            {
+                id: 5,
+                title: "মিসির আলি সমগ্র",
+                cover: "https://i.ibb.co/BVP2wKsW/upscalemedia-transformed-3-modified-1.png",
+                pages: "524 pages",
+                pdf: "https://heyzine.com/flip-book/0429c98a35.html"
+            },
+            {
+                id: 6,
+                title: "তন্দ্রাবিলাস",
+                cover: "https://i.ibb.co/1GyyFyfg/upscalemedia-transformed-4-modified.png",
+                pages: "96 pages",
+                pdf: "https://heyzine.com/flip-book/ebd245c88d.html"
+            }
+        ];
+        
+        // Load books into grid
+        function loadBooks() {
+            const booksGrid = document.getElementById('booksGrid');
+            
+            if (!booksGrid) {
+                console.error('Books grid not found');
+                return;
+            }
+            
+            booksData.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card';
+                
+                bookCard.innerHTML = `
+                    <img src="${book.cover}" alt="${book.title}" class="book-cover" onerror="this.src='https://placehold.co/150x180/cccccc/333333?text=Book+Cover'">
+                    <h3 class="book-title">${book.title}</h3>
+                    <p class="book-pages">${book.pages}</p>
+                    <a href="${book.pdf}" target="_blank" class="read-btn">পড়ুন</a>
+                `;
+                
+                booksGrid.appendChild(bookCard);
+            });
+            
+            console.log('Books loaded successfully!');
+        }
+        
+        // Simple search functionality
+        function initializeSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+            
+            if (!searchInput || !searchResults) return;
+            
+            searchInput.addEventListener('input', function() {
+                const query = this.value.trim().toLowerCase();
+                searchResults.innerHTML = '';
+                
+                if (query === '') return;
+                
+                const foundBooks = booksData.filter(book => 
+                    book.title.toLowerCase().includes(query)
+                );
+                
+                if (foundBooks.length > 0) {
+                    foundBooks.forEach(book => {
+                        const resultItem = document.createElement('div');
+                        resultItem.className = 'search-result';
+                        resultItem.innerHTML = `
+                            <a href="${book.pdf}" target="_blank" style="display: block; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px; margin: 5px 0; color: var(--text-primary); text-decoration: none;">
+                                ${book.title} - ${book.pages}
+                            </a>
+                        `;
+                        searchResults.appendChild(resultItem);
+                    });
+                } else {
+                    searchResults.innerHTML = '<p style="color: var(--text-secondary); text-align: center;">কোনো বই পাওয়া যায়নি</p>';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
